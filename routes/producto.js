@@ -121,7 +121,11 @@ app.get('/id/:id', (req, res) => {
 // mustra todas los productos
 
 app.get('/', (req, res) => {
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
     Producto.find({})
+        .skip(desde)
+        .limit(12)
         .exec((err, producto) => {
             if (err) {
                 return res.status(500).json({
@@ -130,10 +134,13 @@ app.get('/', (req, res) => {
                     err: err
                 })
             }
-            res.status(200).json({
-                ok: true,
-                producto: producto
-            });
+            Producto.count({}, (err, conteo) => {
+                res.status(200).json({
+                    ok: true,
+                    producto: producto,
+                    conteo: conteo
+                });
+            })
         });
 
 });
@@ -157,7 +164,7 @@ app.get('/buscar/:termino', (req, res) => {
                     err: err
                 })
             }
-            Producto.count({}, (err, conteo) => {
+            Producto.count({ $or: [{ etiquetas: regex }, { nombre: regex }] }, (err, conteo) => {
                 res.status(200).json({
                     ok: true,
                     producto: producto,
@@ -182,6 +189,7 @@ app.post('/', mdAautenticacion.verificaToken, (req, res) => {
         principal: body.principal,
         etiquetas: body.etiquetas,
         random: Math.random(),
+        proporcion: body.proporcion,
     });
 
     producto.save((err, productoDB) => {
@@ -235,7 +243,7 @@ app.put('/:id', [mdAautenticacion.verificaToken], (req, res) => {
         producto.descripcion = body.descripcion;
         producto.principal = body.principal;
         producto.etiquetas = body.etiquetas;
-
+        producto.proporcion = body.proporcion;
         producto.save((err, productoGuardado) => {
             if (err) {
                 return res.status(400).json({

@@ -16,7 +16,7 @@ const client = new OAuth2Client(CLIENT_ID);
 var mdAutenticacion = require('../middlewares/autenticacion');
 
 app.get('/renuevatoken', mdAutenticacion.verificaToken, (req, res) => {
-    var token = jwt.sign({ usuario: req.usuario }, SEED, { expiresIn: 28800 }); // 4 horas
+    var token = jwt.sign({ usuario: req.usuario }, SEED, { expiresIn: 172800 }); // 2 dias
     res.status(200).json({
         ok: true,
         token: token
@@ -70,7 +70,7 @@ app.post('/google', async(req, res) => {
                     errors: err
                 });
             } else {
-                var token = jwt.sign({ usuario: usuarioDB }, SEED, { expiresIn: 28800 }); // 4 horas
+                var token = jwt.sign({ usuario: usuarioDB }, SEED, { expiresIn: 172800 }); // 4 horas
                 usuarioDB.password = 'ella no te ama';
                 res.status(200).json({
                     ok: true,
@@ -89,7 +89,7 @@ app.post('/google', async(req, res) => {
             usuario.password = ":)";
 
             usuario.save((err, usuarioDB) => {
-                var token = jwt.sign({ usuario: usuarioDB }, SEED, { expiresIn: 28800 }); // 4 horas
+                var token = jwt.sign({ usuario: usuarioDB }, SEED, { expiresIn: 172800 }); // 4 horas
                 usuarioDB.password = 'ella no te ama';
                 res.status(200).json({
                     ok: true,
@@ -115,7 +115,7 @@ app.post('/facebook', (req, res) => {
             });
         }
         if (usuarioDB) {
-            var token = jwt.sign({ usuario: usuarioDB }, SEED, { expiresIn: 28800 }); // 4 horas
+            var token = jwt.sign({ usuario: usuarioDB }, SEED, { expiresIn: 172800 }); // 4 horas
             usuarioDB.password = 'ella no te ama';
             res.status(200).json({
                 ok: true,
@@ -140,7 +140,7 @@ app.post('/facebook', (req, res) => {
                         errors: err
                     });
                 }
-                var token = jwt.sign({ usuario: usuarioDB }, SEED, { expiresIn: 28800 }); // 4 horas
+                var token = jwt.sign({ usuario: usuarioDB }, SEED, { expiresIn: 172800 }); // 4 horas
                 usuarioDB.password = 'ella no te ama';
                 res.status(200).json({
                     ok: true,
@@ -180,7 +180,7 @@ app.post('/', (req, res) => {
         }
         //crear un token
         usuarioBD.password = 'ella no te ama';
-        var token = jwt.sign({ usuario: usuarioBD }, SEED, { expiresIn: 28800 }); // 8 horas
+        var token = jwt.sign({ usuario: usuarioBD }, SEED, { expiresIn: 172800 }); // 8 horas
         res.status(200).json({
             ok: true,
             mensaje: 'login correcto',

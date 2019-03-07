@@ -12,11 +12,10 @@ var productoSchema = new Schema({
     usuario: { type: Schema.Types.ObjectId, ref: 'Usuario', required: true },
     descripcion: { type: String, required: false },
     img: { type: String, required: false },
-    imgOriginal: { type: String, required: false },
     ventas: { type: Number, required: false },
     principal: { type: Boolean, required: false, default: false },
     random: { type: Number, required: false },
-    medidas: { type: Schema.Types.ObjectId, ref: 'Medida', required: false },
+    proporcion: { type: String, required: false },
     etiquetas: { type: String, required: false }
 }, { collection: 'productos' })
 

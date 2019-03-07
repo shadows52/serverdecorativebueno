@@ -3,6 +3,29 @@ var Medidas = require('../models/medidas');
 var mdAautenticacion = require('../middlewares/autenticacion');
 var app = express();
 
+
+// obtiene medidas por proporcion
+
+app.get('/proporciones/:proporcion', (req, res) => {
+    var proporcion = req.params.proporcion;
+    Medidas.find({ 'proporcion': proporcion })
+        .exec((err, medidas) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'error al conectar con la base de datos',
+                    err: err
+                })
+            }
+            res.status(200).json({
+                ok: true,
+                medidas: medidas
+            });
+        });
+
+})
+
+
 // mustra todas las medidas
 
 app.get('/', (req, res) => {
@@ -25,7 +48,7 @@ app.get('/', (req, res) => {
 
 // Crear Nuevas Medidas
 
-app.post('/', mdAautenticacion.verificaToken, (req, res) => {
+app.post('/', [mdAautenticacion.verificaToken, mdAautenticacion.verificaAdmin_ROLE], (req, res) => {
     let body = req.body;
 
     let medida = new Medidas({

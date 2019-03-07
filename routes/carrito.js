@@ -97,7 +97,8 @@ app.post('/', mdAautenticacion.verificaToken, (req, res) => {
     var carrito = new Carrito({
         usuario: body.usuario,
         producto: body.producto,
-        cantidad: body.cantidad
+        cantidad: body.cantidad,
+        precio: body.precio
     });
     Carrito.find({
         $and: [
