@@ -1,5 +1,5 @@
 var express = require('express');
-var Medidas = require('../models/medidas');
+var Medida = require('../models/medidas');
 var mdAautenticacion = require('../middlewares/autenticacion');
 var app = express();
 
@@ -8,7 +8,7 @@ var app = express();
 
 app.get('/proporciones/:proporcion', (req, res) => {
     var proporcion = req.params.proporcion;
-    Medidas.find({ proporcion: proporcion })
+    Medida.find({ proporcion: proporcion })
         .exec((err, medidas) => {
             if (err) {
                 return res.status(500).json({
@@ -23,13 +23,13 @@ app.get('/proporciones/:proporcion', (req, res) => {
             });
         });
 
-})
+});
 
 
 // mustra todas las medidas
 
 app.get('/', (req, res) => {
-    Medidas.find({})
+    Medida.find({})
         .exec((err, medidas) => {
             if (err) {
                 return res.status(500).json({
@@ -51,7 +51,7 @@ app.get('/', (req, res) => {
 app.post('/', [mdAautenticacion.verificaToken, mdAautenticacion.verificaAdmin_ROLE], (req, res) => {
     let body = req.body;
 
-    let medida = new Medidas({
+    let medida = new Medida({
         proporcion: body.proporcion,
         nombre: body.nombre,
         precio: body.precio
