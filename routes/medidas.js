@@ -8,7 +8,7 @@ var app = express();
 
 app.get('/proporciones/:proporcion', (req, res) => {
     var proporcion = req.params.proporcion;
-    Medidas.find({ 'proporcion': proporcion })
+    Medidas.find({ proporcion: proporcion })
         .exec((err, medidas) => {
             if (err) {
                 return res.status(500).json({
