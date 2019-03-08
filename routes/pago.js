@@ -168,6 +168,19 @@ app.post('/notificacion', (req, res) => {
         idPago: id
     })
     if (topic === 'payment') {
+        status.save((err, statusDB) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: 'error al conectar con la base de datos',
+                    err: err
+                })
+            }
+            res.status(201).json({
+                ok: true,
+                mensaje: statusDB
+            })
+        });
         mp.get('/v1/payments/' + id)
             .then(function(resp) {
                 var ventasplit = resp.response.description;
